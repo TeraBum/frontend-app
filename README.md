@@ -1,7 +1,7 @@
 # 🏗️ Estrutura recomendada do repositório
 
-    frontend-app/
-    ├── src/
+frontend-app/
+├── src/
 │   ├── components/
 │   │   ├── Navbar.tsx        <- barra de navegação principal
 │   │   ├── OrderCard.tsx     <- cartão de pedidos usado em Orders
@@ -30,6 +30,7 @@
 ├── postcss.config.js         <- configuração do PostCSS para Tailwind
 ├── tsconfig.json
 └── vite.config.ts
+
 
 ##  Passo a passo pra criar do zero
 

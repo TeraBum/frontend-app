@@ -21,8 +21,8 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-secondary">
-      <Navbar />
+      <div className='min-h-screen'><Navbar />
+    <div className="flex flex-col items-center justify-center mt-20 bg-secondary">
       <form onSubmit={handleLogin} className="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4">Login</h2>
         {error && <p className="text-red-500 mb-2">{error}</p>}
@@ -44,6 +44,7 @@ const Login: React.FC = () => {
         />
         <button type="submit" className="w-full bg-primary text-white py-2 rounded">Entrar</button>
       </form>
+    </div>
     </div>
   );
 };

@@ -21,8 +21,9 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-secondary">
+    <div className='min-h-screen'>
       <Navbar />
+    <div className="flex flex-col items-center justify-center mt-20 bg-secondary">
       <form onSubmit={handleRegister} className="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4">Registrar</h2>
         {error && <p className="text-red-500 mb-2">{error}</p>}
@@ -52,6 +53,7 @@ const Register: React.FC = () => {
         />
         <button type="submit" className="w-full bg-primary text-white py-2 rounded">Registrar</button>
       </form>
+    </div>
     </div>
   );
 };

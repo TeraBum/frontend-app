@@ -2,26 +2,34 @@
 
     frontend-app/
     ├── src/
-    │   ├── components/
-    │   │   ├── Navbar.tsx
-    │   │   ├── OrderCard.tsx
-    │   │   └── Loader.tsx
-    │   ├── pages/
-    │   │   ├── Home.tsx
-    │   │   ├── Orders.tsx
-    │   │   └── OrderDetails.tsx
-    │   ├── services/
-    │   │   └── api.ts          <- onde ficam os endpoints
-    │   ├── App.tsx
-    │   ├── main.tsx
-    │   └── index.css
-    ├── public/
-    │   └── favicon.ico
-    ├── Dockerfile
-    ├── package.json
-    ├── tailwind.config.js
-    ├── tsconfig.json
-    └── vite.config.ts
+│   ├── components/
+│   │   ├── Navbar.tsx        <- barra de navegação principal
+│   │   ├── OrderCard.tsx     <- cartão de pedidos usado em Orders
+│   │   └── Loader.tsx        <- loader animado com border-t-primary
+│   ├── pages/
+│   │   ├── Home.tsx          <- página inicial
+│   │   ├── Orders.tsx        <- lista de pedidos do usuário
+│   │   └── OrderDetails.tsx  <- detalhes de um pedido específico
+│   │   ├── Login.tsx         <- página de login
+│   │   ├── Register.tsx      <- página de cadastro
+│   │   ├── Products.tsx      <- listagem de produtos
+│   │   └── Cart.tsx          <- carrinho do usuário
+│   ├── services/
+│   │   └── api.ts             <- onde ficam os endpoints e serviços (UserService, OrderService, etc.)
+│   ├── App.tsx               <- configuração de rotas e layout geral
+│   ├── main.tsx              <- ponto de entrada React
+│   └── index.css             <- importações Tailwind e CSS global
+├── public/
+│   └── favicon.ico
+├── .vscode/
+│   └── settings.json         <- configuração VSCode para Tailwind e TSX
+├── Dockerfile
+├── package.json
+├── package-lock.json         <- gerado automaticamente pelo npm
+├── tailwind.config.js        <- configuração de cores, fonte e tema TeraBum
+├── postcss.config.js         <- configuração do PostCSS para Tailwind
+├── tsconfig.json
+└── vite.config.ts
 
 ##  Passo a passo pra criar do zero
 

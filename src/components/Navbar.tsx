@@ -29,16 +29,34 @@ const Navbar: React.FC = () => {
         {/* LINKS DO MENU */}
         <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
           <Link
+            to="/"
+            className="text-gray-700 hover:text-[#24dbc5] transition-colors"
+          >
+            Home
+          </Link>
+          <Link
             to="/products"
             className="text-gray-700 hover:text-[#24dbc5] transition-colors"
           >
             Produtos
           </Link>
+          <Link
+            to="/contact"
+            className="text-gray-700 hover:text-[#24dbc5] transition-colors"
+          >
+            Entrar em Contato
+          </Link>
+          <Link
+            to="/about"
+            className="text-gray-700 hover:text-[#24dbc5] transition-colors"
+          >
+            Sobre nós
+          </Link>
         </nav>
 
         {/* ÍCONES À DIREITA */}
         <div className="flex items-center space-x-6 text-gray-700">
-          {/* Favoritos (ainda opcional) */}
+          {/* Favoritos */}
           <button
             title="Favoritos"
             className="hover:text-[#24dbc5] transition-colors"

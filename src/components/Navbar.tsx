@@ -1,18 +1,71 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ShoppingCart, User, Heart, Search } from "lucide-react";
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
-    <nav className="bg-primary text-black p-4 flex justify-between items-center">
-      <div>
-        <div className="text-2xl font-bold">TeraBum</div>
-        <div className="text-sm font-medium">Tecnologia que acelera o seu mundo</div>
+    <header className="bg-[#ffffff] border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+        {/* LOGO */}
+        <div
+          onClick={() => navigate("/")}
+          className="flex items-center cursor-pointer select-none"
+        >
+          <span className="text-xl font-extrabold text-[#000000]">TeraBum</span>
+        </div>
+
+        {/* CAMPO DE BUSCA */}
+        <div className="hidden md:flex items-center bg-[#f5f7fa] rounded-lg px-3 py-2 w-1/3">
+          <Search className="text-gray-400 w-4 h-4 mr-2" />
+          <input
+            type="text"
+            placeholder="Buscar produtos..."
+            className="bg-transparent outline-none text-sm text-gray-700 w-full"
+          />
+        </div>
+
+        {/* LINKS DO MENU */}
+        <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
+          <Link
+            to="/products"
+            className="text-gray-700 hover:text-[#24dbc5] transition-colors"
+          >
+            Produtos
+          </Link>
+        </nav>
+
+        {/* ÍCONES À DIREITA */}
+        <div className="flex items-center space-x-6 text-gray-700">
+          {/* Favoritos (ainda opcional) */}
+          <button
+            title="Favoritos"
+            className="hover:text-[#24dbc5] transition-colors"
+          >
+            <Heart className="w-5 h-5" />
+          </button>
+
+          {/* Carrinho */}
+          <button
+            title="Carrinho"
+            onClick={() => navigate("/cart")}
+            className="hover:text-[#24dbc5] transition-colors"
+          >
+            <ShoppingCart className="w-5 h-5" />
+          </button>
+
+          {/* Login / Registro */}
+          <button
+            title="Entrar ou Cadastrar"
+            onClick={() => navigate("/login")}
+            className="hover:text-[#24dbc5] transition-colors"
+          >
+            <User className="w-5 h-5" />
+          </button>
+        </div>
       </div>
-      <div className="space-x-4">
-        <Link to="/" className="hover:text-white">Home</Link>
-        <Link to="/orders" className="hover:text-white">Pedidos</Link>
-      </div>
-    </nav>
+    </header>
   );
 };
 

@@ -13,7 +13,11 @@ const Navbar: React.FC = () => {
           onClick={() => navigate("/")}
           className="flex items-center cursor-pointer select-none"
         >
-          <span className="text-xl font-extrabold text-[#000000]">TeraBum</span>
+          <img
+            src="/terabum logo.png"
+            alt="TeraBum"
+            className="h-10 w-auto hover:opacity-90 transition-opacity"
+          />
         </div>
 
         {/* CAMPO DE BUSCA */}

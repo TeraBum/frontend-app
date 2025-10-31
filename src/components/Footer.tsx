@@ -8,7 +8,15 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* LOGO + SLOGAN */}
         <div>
-          <h2 className="text-2xl font-extrabold text-[#24dbc5]">TeraBum</h2>
+          {/* Logo */}
+          <div className="flex items-center space-x-2">
+            <img
+              src="/terabum logo.png"
+              alt="TeraBum"
+              className="h-10 w-auto cursor-pointer hover:opacity-90 transition-opacity"
+            />
+          </div>
+
           <p className="text-sm text-gray-400 mt-3 leading-relaxed">
             Tecnologia que acelera o seu mundo.
           </p>
@@ -51,17 +59,26 @@ const Footer: React.FC = () => {
           <h3 className="text-[#24dbc5] font-semibold mb-4">Serviços</h3>
           <ul className="space-y-2 text-sm text-gray-400">
             <li>
-              <Link to="/products" className="hover:text-[#24dbc5] transition-colors">
+              <Link
+                to="/products"
+                className="hover:text-[#24dbc5] transition-colors"
+              >
                 Produtos
               </Link>
             </li>
             <li>
-              <Link to="/cart" className="hover:text-[#24dbc5] transition-colors">
+              <Link
+                to="/cart"
+                className="hover:text-[#24dbc5] transition-colors"
+              >
                 Carrinho
               </Link>
             </li>
             <li>
-              <Link to="/login" className="hover:text-[#24dbc5] transition-colors">
+              <Link
+                to="/login"
+                className="hover:text-[#24dbc5] transition-colors"
+              >
                 Login / Cadastro
               </Link>
             </li>
@@ -93,7 +110,9 @@ const Footer: React.FC = () => {
 
       {/* COPYRIGHT */}
       <div className="border-t border-gray-800 mt-10 pt-6 text-center text-xs text-gray-500">
-        © {new Date().getFullYear()} TeraBum — Todos os direitos reservados.
+        © {new Date().getFullYear()}{" "}
+        <span className="font-semibold text-[#24dbc5]">TeraBum</span> — Todos os
+        direitos reservados.
       </div>
     </footer>
   );

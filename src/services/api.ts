@@ -2,23 +2,23 @@ import axios from 'axios';
 
 // ------------------- Instâncias por serviço -------------------
 const userAPI = axios.create({
-  baseURL: 'http://localhost:5000/api/v1',
+  baseURL: 'http://localhost:5000/api', // ⚡ corresponde ao backend
 });
 
 const vitrineAPI = axios.create({
-  baseURL: 'http://localhost:5010/api/v1',
+  baseURL: 'http://localhost:5010/api/vitrine',
 });
 
 const estoqueAPI = axios.create({
-  baseURL: 'http://localhost:5020/api/v1',
+  baseURL: 'http://localhost:5020/api/stock-items',
 });
 
 const carrinhoAPI = axios.create({
-  baseURL: 'http://localhost:5030/api/v1',
+  baseURL: 'http://localhost:5030/api/cart',
 });
 
 const orderAPI = axios.create({
-  baseURL: 'http://localhost:5050/api/v1',
+  baseURL: 'http://localhost:5050/api/payments',
 });
 
 // ------------------- Interceptor comum (token) -------------------
@@ -35,50 +35,64 @@ const orderAPI = axios.create({
 // ------------------- UserService -------------------
 export const UserService = {
   register: (data: { name: string; email: string; password: string }) =>
-    userAPI.post('/Users/register', data),
+    userAPI.post('/users/register', {
+      nome: data.name,
+      email: data.email,
+      senha: data.password,
+    }),
 
-  login: (data: { email: string; password: string }) =>
-    userAPI.post('/Users/login', data),
+  login: async (data: { email: string; password: string }) => {
+    const response = await userAPI.post('/users/login', {
+      email: data.email,
+      senha: data.password,
+    });
 
-  getAll: () => userAPI.get('/Users'),
-  getById: (id: string) => userAPI.get(`/Users/${id}`),
-  update: (id: string, data: any) => userAPI.put(`/Users/${id}`, data),
-  updateRole: (id: string, role: string) => userAPI.put(`/Users/${id}/role`, { role }),
-  delete: (id: string) => userAPI.delete(`/Users/${id}`),
+    // salva token automaticamente
+    const token = response.data.token;
+    if (token) localStorage.setItem('token', token);
+
+    return response;
+  },
+
+  getAll: () => userAPI.get('/users'),
+  getById: (id: string) => userAPI.get(`/users/${id}`),
+  update: (id: string, data: any) => userAPI.put(`/users/${id}`, data),
+  updateRole: (id: string, role: string) => userAPI.put(`/users/${id}/role`, role),
+  delete: (id: string) => userAPI.delete(`/users/${id}`),
 };
 
 // ------------------- VitrineService -------------------
 export const VitrineService = {
-  getProducts: () => vitrineAPI.get('/vitrine/Product'),
-  getProductById: (id: string) => vitrineAPI.get(`/vitrine/Product/${id}`),
-  getProductStock: (id: string) => vitrineAPI.get(`/vitrine/Product/${id}/stock`),
+  getProducts: () => vitrineAPI.get('/Product'),
+  getProductById: (id: string) => vitrineAPI.get(`/Product/${id}`),
+  getProductStock: (id: string) => vitrineAPI.get(`/Product/${id}/stock`),
 };
 
 // ------------------- EstoqueService -------------------
 export const StockService = {
-  listItems: () => estoqueAPI.get('/stock-items'),
-  getItem: (warehouseId: string, productId: string) => estoqueAPI.get(`/stock-items/${warehouseId}/${productId}`),
+  listItems: () => estoqueAPI.get('/'),
+  getItem: (warehouseId: string, productId: string) => estoqueAPI.get(`/${warehouseId}/${productId}`),
   updateItem: (warehouseId: string, productId: string, data: any) =>
-    estoqueAPI.put(`/stock-items/${warehouseId}/${productId}`, data),
+    estoqueAPI.put(`/${warehouseId}/${productId}`, data),
   deleteItem: (warehouseId: string, productId: string) =>
-    estoqueAPI.delete(`/stock-items/${warehouseId}/${productId}`),
-  createItem: (data: any) => estoqueAPI.post('/stock-items', data),
-  baixa: (data: any) => estoqueAPI.post('/stock-items/baixa', data),
+    estoqueAPI.delete(`/${warehouseId}/${productId}`),
+  createItem: (data: any) => estoqueAPI.post('/', data),
+  baixa: (data: any) => estoqueAPI.post('/baixa', data),
 };
 
 // ------------------- CartService -------------------
 export const CartService = {
-  create: (data: any) => carrinhoAPI.post('/cart', data),
-  get: () => carrinhoAPI.get('/cart'),
-  editItems: (data: any) => carrinhoAPI.patch('/cart/cart-items', data),
-  cancel: () => carrinhoAPI.patch('/cart/cancel'),
-  checkout: (data: any) => carrinhoAPI.post('/cart/checkout', data),
+  create: (data: any) => carrinhoAPI.post('/', data),
+  get: () => carrinhoAPI.get('/'),
+  editItems: (data: any) => carrinhoAPI.patch('/cart-items', data),
+  cancel: () => carrinhoAPI.patch('/cancel'),
+  checkout: (data: any) => carrinhoAPI.post('/checkout', data),
 };
 
 // ------------------- OrderService -------------------
 export const OrderService = {
-  createPayment: (data: any) => orderAPI.post('/payments', data),
-  getPayment: (orderId: string) => orderAPI.get(`/payments/${orderId}`),
-  updatePayment: (paymentId: string, data: any) => orderAPI.patch(`/payments/${paymentId}`, data),
-  cancelPayment: (paymentId: string) => orderAPI.delete(`/payments/${paymentId}`),
+  createPayment: (data: any) => orderAPI.post('/', data),
+  getPayment: (orderId: string) => orderAPI.get(`/${orderId}`),
+  updatePayment: (paymentId: string, data: any) => orderAPI.patch(`/${paymentId}`, data),
+  cancelPayment: (paymentId: string) => orderAPI.delete(`/${paymentId}`),
 };

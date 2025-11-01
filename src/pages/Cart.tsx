@@ -43,7 +43,6 @@ const Cart: React.FC = () => {
 
   return (
     <div>
-      <Navbar />
       <main className="p-8 max-w-3xl mx-auto">
         <h1 className="text-2xl font-bold mb-4">Seu Carrinho</h1>
         {cart.length === 0 ? (

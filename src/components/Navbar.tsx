@@ -6,7 +6,7 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-[#ffffff] border-b border-gray-200">
+    <header className="bg-[#000000] border-b border-gray-800">
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
         {/* LOGO */}
         <div
@@ -21,12 +21,12 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* CAMPO DE BUSCA */}
-        <div className="hidden md:flex items-center bg-[#f5f7fa] rounded-lg px-3 py-2 w-1/3">
-          <Search className="text-gray-400 w-4 h-4 mr-2" />
+        <div className="hidden md:flex items-center bg-[#1a1a1a] rounded-lg px-3 py-2 w-1/3">
+          <Search className="text-[#e8eef5] w-4 h-4 mr-2" />
           <input
             type="text"
             placeholder="Buscar produtos..."
-            className="bg-transparent outline-none text-sm text-gray-700 w-full"
+            className="bg-transparent outline-none text-sm text-[#e8eef5] w-full placeholder-[#e8eef5]"
           />
         </div>
 
@@ -34,41 +34,36 @@ const Navbar: React.FC = () => {
         <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
           <Link
             to="/"
-            className="text-gray-700 hover:text-[#24dbc5] transition-colors"
+            className="text-[#e8eef5] hover:text-[#24dbc5] transition-colors"
           >
             Home
           </Link>
           <Link
             to="/products"
-            className="text-gray-700 hover:text-[#24dbc5] transition-colors"
+            className="text-[#e8eef5] hover:text-[#24dbc5] transition-colors"
           >
             Produtos
           </Link>
           <Link
             to="/contact"
-            className="text-gray-700 hover:text-[#24dbc5] transition-colors"
+            className="text-[#e8eef5] hover:text-[#24dbc5] transition-colors"
           >
             Entrar em Contato
           </Link>
           <Link
             to="/about"
-            className="text-gray-700 hover:text-[#24dbc5] transition-colors"
+            className="text-[#e8eef5] hover:text-[#24dbc5] transition-colors"
           >
             Sobre nós
           </Link>
         </nav>
 
         {/* ÍCONES À DIREITA */}
-        <div className="flex items-center space-x-6 text-gray-700">
-          {/* Favoritos */}
-          <button
-            title="Favoritos"
-            className="hover:text-[#24dbc5] transition-colors"
-          >
+        <div className="flex items-center space-x-6 text-[#e8eef5]">
+          <button title="Favoritos" className="hover:text-[#24dbc5] transition-colors">
             <Heart className="w-5 h-5" />
           </button>
 
-          {/* Carrinho */}
           <button
             title="Carrinho"
             onClick={() => navigate("/cart")}
@@ -77,7 +72,6 @@ const Navbar: React.FC = () => {
             <ShoppingCart className="w-5 h-5" />
           </button>
 
-          {/* Login / Registro */}
           <button
             title="Entrar ou Cadastrar"
             onClick={() => navigate("/login")}
@@ -92,3 +86,4 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+

@@ -6,7 +6,6 @@ import { ShoppingCart, Cpu, Monitor, Headphones } from "lucide-react";
 const Home: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[#f5f7fa]">
-      <Navbar />
 
       {/* Hero Banner */}
       <section className="relative bg-gradient-to-r from-[#00C9A7] to-[#0091EA] text-white py-20 px-8">
@@ -73,9 +72,6 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Rodapé */}
-      <Footer />
     </div>
   );
 };

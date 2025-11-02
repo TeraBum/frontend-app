@@ -9,7 +9,7 @@ interface Product {
   name: string;
   description: string;
   price: number;
-  imagesJson: string; // JSON com URLs das imagens
+  imagesJson?: string; // JSON com URLs das imagens
   category: string;
   isActive: boolean;
   createdAt: string;
@@ -28,7 +28,7 @@ const Products: React.FC = () => {
   useEffect(() => {
     VitrineService.getProducts()
       .then((res) => {
-        const activeProducts = res.data.filter((p: Product) => p.isActive);
+        const activeProducts = res.data.products.filter((p: Product) => p.isActive);
         setProducts(activeProducts);
         setFilteredProducts(activeProducts);
       })
@@ -53,15 +53,23 @@ const Products: React.FC = () => {
     if (sort === "menor") filtered.sort((a, b) => a.price - b.price);
     else if (sort === "maior") filtered.sort((a, b) => b.price - a.price);
 
-    setFilteredProducts(filtered);
+    //setFilteredProducts(filtered);
   }, [category, sort, priceRange, products]);
 
   const handleAddToCart = async (productId: string) => {
     try {
+      const r = await CartService.get()
       await CartService.editItems({ productId, quantity: 1 });
       alert("Produto adicionado ao carrinho!");
     } catch (err) {
-      alert("Erro ao adicionar ao carrinho");
+      try{
+      await CartService.create({items:[
+        { productId: productId, quantity: 1, unitPrice: 100 }
+      ]});
+      alert("Produto adicionado ao carrinho!")
+    } catch(err){
+      alert("Erro ao adicionar ao carrinho!")
+    }
     }
   };
 
@@ -132,9 +140,9 @@ const Products: React.FC = () => {
               key={product.id}
               id={product.id}
               name={product.name}
-              description={product.description.slice(0, 60) + "..."}
+              description={product.description}
               price={product.price}
-              stock={product.stock}
+              stock={/*product.stock*/ 100}
               image={mainImage}
               onAddToCart={handleAddToCart}
             />

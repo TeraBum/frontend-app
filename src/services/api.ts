@@ -2,11 +2,15 @@ import axios from 'axios';
 
 // ------------------- Instâncias por serviço -------------------
 const userAPI = axios.create({
-  baseURL: 'http://localhost:5000/api', // ⚡ corresponde ao backend
+  baseURL: 'http://146.235.59.248/autenticacao/api', // ⚡ corresponde ao backend
 });
 
+//const vitrineAPI = axios.create({
+//  baseURL: 'http://localhost:5001/api/v1/vitrine',
+//});
+
 const vitrineAPI = axios.create({
-  baseURL: 'http://localhost:5010/api/vitrine',
+  baseURL: 'http://146.235.59.248/vitrine/api/v1/vitrine',
 });
 
 const estoqueBaseURL = import.meta.env.VITE_ESTOQUE_API_URL ?? '/api/v1/estoque';
@@ -15,7 +19,7 @@ const estoqueAPI = axios.create({
 });
 
 const carrinhoAPI = axios.create({
-  baseURL: 'http://localhost:5030/api/cart',
+  baseURL: 'http://146.235.59.248/carrinho/api/v1/cart',
 });
 
 const orderAPI = axios.create({

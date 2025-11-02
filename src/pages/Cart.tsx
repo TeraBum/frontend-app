@@ -10,8 +10,14 @@ interface CartItem {
   price: number;
 }
 
+const items:Array<CartItem> =  [
+  {productId: '1', name: 'computador', quantity: 12, price: 1000},
+  {productId: '2', name: 'celular', quantity: 1, price: 500},
+  {productId: '3', name: 'torre', quantity: 20, price: 10000000}
+]
+
 const Cart: React.FC = () => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>(items);
   const [loading, setLoading] = useState(true);
 
   const fetchCart = async () => {
@@ -20,7 +26,7 @@ const Cart: React.FC = () => {
       setCart(res.data.items);
       setLoading(false);
     } catch (err) {
-      setCart([]);
+      setCart(items);
       setLoading(false);
     }
   };
@@ -34,6 +40,7 @@ const Cart: React.FC = () => {
       await CartService.checkout({ items: cart });
       alert('Compra realizada com sucesso!');
       setCart([]);
+      //redirect para o servico de pagamento
     } catch (err) {
       alert('Erro ao realizar checkout');
     }

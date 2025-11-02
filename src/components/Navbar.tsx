@@ -16,16 +16,19 @@ const Navbar: React.FC = () => {
     <header className="bg-[#000000] border-b border-gray-800">
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
         {/* LOGO */}
-        <div
-          onClick={() => navigate("/")}
-          className="flex items-center cursor-pointer select-none"
-        >
-          <img
-            src="/terabum logo.png"
-            alt="TeraBum"
-            className="h-10 w-auto hover:opacity-90 transition-opacity"
-          />
+        <div onClick={() => navigate("/")} className="flex items-center cursor-pointer select-none gap-6">
+        {/* Logo */}
+        <img
+          src="terabum logo.png"
+          alt="TeraBum"
+          className="h-12 w-auto hover:opacity-90 transition-opacity"
+         />
+        {/* Texto ao lado da logo */}
+          <span className="text-white font-bold text-2xl md:text-3xl font-prompt select-none">
+          TeraBum
+          </span>
         </div>
+
 
         {/* CAMPO DE BUSCA */}
         <div className="hidden md:flex items-center bg-[#1a1a1a] rounded-lg px-3 py-2 w-1/3">

@@ -68,7 +68,7 @@ const Products: React.FC = () => {
     if (sort === "menor") filtered.sort((a, b) => a.price - b.price);
     else if (sort === "maior") filtered.sort((a, b) => b.price - a.price);
 
-    //setFilteredProducts(filtered);
+    setFilteredProducts(filtered);
   }, [category, sort, priceRange, products]);
 
   const handleAddToCart = async (productId: string) => {

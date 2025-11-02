@@ -1,6 +1,5 @@
 // src/pages/Payment.tsx
 import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
 
 interface CartItem {
   id: string;
@@ -11,7 +10,6 @@ interface CartItem {
 }
 
 const Payment: React.FC = () => {
-  // Dados simulados do carrinho
   const [cart] = useState<CartItem[]>([
     {
       id: '1',
@@ -27,7 +25,6 @@ const Payment: React.FC = () => {
   const [paymentMethod, setPaymentMethod] = useState('Cartão Mastercard **** 6302');
   const [installments, setInstallments] = useState(1);
 
-  // Simulação de endereço aleatório
   const [address, setAddress] = useState({
     name: 'João da Silva',
     street: 'Rua das Flores, 123',
@@ -37,7 +34,7 @@ const Payment: React.FC = () => {
     zip: '30123-456',
   });
 
-  // Estado temporário para o modal, descartando alterações ao fechar
+  // Endereço temporário para o modal
   const [tempAddress, setTempAddress] = useState({ ...address });
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -48,7 +45,7 @@ const Payment: React.FC = () => {
       : subtotal + shipping;
 
   const openAddressModal = () => {
-    setTempAddress({ ...address }); // copiar endereço atual
+    setTempAddress({ ...address });
     setShowAddressModal(true);
   };
 
@@ -63,8 +60,6 @@ const Payment: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      <Navbar />
-
       <main className="flex-1 max-w-7xl mx-auto flex flex-col lg:flex-row p-4 lg:p-6 gap-6">
         {/* Resumo do pedido */}
         <aside className="w-full lg:w-1/3 bg-white p-6 rounded-lg shadow sticky top-6 h-fit space-y-6">
@@ -91,11 +86,7 @@ const Payment: React.FC = () => {
             <h3 className="font-semibold text-lg">Itens</h3>
             {cart.map((item) => (
               <div key={item.id} className="flex items-center gap-3">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-24 h-24 object-cover rounded"
-                />
+                <img src={item.image} alt={item.name} className="w-24 h-24 object-cover rounded" />
                 <div className="flex-1">
                   <p className="font-semibold">{item.name}</p>
                   <p className="text-sm text-gray-600">x{item.quantity}</p>
@@ -196,35 +187,6 @@ const Payment: React.FC = () => {
           </div>
         </section>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-800 text-gray-200 mt-auto p-6 text-sm">
-  <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between gap-6 lg:gap-12">
-
-    {/* Links institucionais */}
-    <div className="space-y-2">
-      <p className="hover:underline cursor-pointer">Condições de Uso</p>
-      <p className="hover:underline cursor-pointer">Notificação de Privacidade</p>
-      <p className="hover:underline cursor-pointer">Cookies</p>
-      <p className="hover:underline cursor-pointer">Anúncios Baseados em Interesses</p>
-    </div>
-
-    {/* Informações da empresa */}
-    <div className="space-y-2 text-gray-400">
-      <p>© 2021-2025 TeraBuum.com, Inc. ou suas afiliadas</p>
-      <p>TeraBuum Serviços de Varejo do Brasil Ltda. | CNPJ 12.345.678/0001-90</p>
-      <p>Av. Exemplo, 123, Torre A, 10° andar - São Paulo CEP: 01234-567</p>
-      <p>Fale conosco | contato@terabuum.com.br</p>
-    </div>
-
-    {/* Formas de pagamento */}
-    <div className="space-y-2">
-      <p className="font-semibold">Formas de pagamento aceitas:</p>
-      <p>Cartões de crédito (Visa, MasterCard, Elo e American Express), cartões de débito (Visa e Elo), Boleto e Pix</p>
-    </div>
-
-  </div>
-</footer>
 
       {/* Modal de endereço */}
       {showAddressModal && (

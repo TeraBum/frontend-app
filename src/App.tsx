@@ -10,6 +10,8 @@ import Cart from "./pages/Cart";
 import StockAdmin from "./pages/StockAdmin";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Payment from "./pages/Payment";
+
 
 const App: React.FC = () => {
   return (
@@ -28,6 +30,8 @@ const App: React.FC = () => {
           <Route path="/orders" element={<Orders />} />
           <Route path="/orders/:id" element={<OrderDetails />} />
           <Route path="/admin/estoque" element={<StockAdmin />} />
+          <Route path="/payment" element={<Payment />} />
+
         </Routes>
       </main>
 

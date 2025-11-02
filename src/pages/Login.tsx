@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { UserService } from '../services/api';
 import Navbar from '../components/Navbar';
+import { useAuth } from '../context/AuthContext';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,10 +18,21 @@ const Login: React.FC = () => {
 
     try {
       const response = await UserService.login({ email, password });
-      console.log('Login sucesso:', response.data);
+      const token = response.data?.token;
 
-      // token já salvo pelo UserService
-      navigate('/products');
+      if (!token) {
+        setError('Token não recebido. Tente novamente mais tarde.');
+        return;
+      }
+
+      const role = login(token);
+
+      const state = location.state as { from?: Location } | undefined;
+      const redirectPath =
+        state?.from?.pathname ??
+        (role === 'Administrador' ? '/admin/estoque' : '/products');
+
+      navigate(redirectPath, { replace: true });
     } catch (err: any) {
       console.error('Erro login:', err.response);
       setError(err.response?.data || 'Erro ao logar');

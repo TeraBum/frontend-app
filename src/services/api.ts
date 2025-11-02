@@ -72,13 +72,13 @@ export const VitrineService = {
 // ------------------- EstoqueService -------------------
 export const StockService = {
   listItems: () => estoqueAPI.get('/stock-items'),
-  getItem: (warehouseId: string, productId: string) => estoqueAPI.get(`/${warehouseId}/${productId}`),
+  getItem: (warehouseId: string, productId: string) => estoqueAPI.get(`/stock-items/${warehouseId}/${productId}`),
   updateItem: (warehouseId: string, productId: string, data: any) =>
-    estoqueAPI.put(`/${warehouseId}/${productId}`, data),
+    estoqueAPI.put(`/stock-items/${warehouseId}/${productId}`, data),
   deleteItem: (warehouseId: string, productId: string) =>
-    estoqueAPI.delete(`/${warehouseId}/${productId}`),
-  createItem: (data: any) => estoqueAPI.post('/', data),
-  baixa: (data: any) => estoqueAPI.post('/baixa', data),
+    estoqueAPI.delete(`/stock-items/${warehouseId}/${productId}`),
+  createItem: (data: any) => estoqueAPI.post('/stock-items', data),
+  baixa: (data: any) => estoqueAPI.post('/stock-items/baixa', data),
 };
 
 // ------------------- Estoque Products Service -------------------

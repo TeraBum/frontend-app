@@ -1,9 +1,16 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, User, Heart, Search } from "lucide-react";
+import { ShoppingCart, User, Heart, Search, LogOut } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const { token, role, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <header className="bg-[#000000] border-b border-gray-800">
@@ -44,6 +51,14 @@ const Navbar: React.FC = () => {
           >
             Produtos
           </Link>
+          {role === "Administrador" && (
+            <Link
+              to="/admin/estoque"
+              className="text-[#e8eef5] hover:text-[#24dbc5] transition-colors"
+            >
+              Admin
+            </Link>
+          )}
           <Link
             to="/contact"
             className="text-[#e8eef5] hover:text-[#24dbc5] transition-colors"
@@ -72,13 +87,23 @@ const Navbar: React.FC = () => {
             <ShoppingCart className="w-5 h-5" />
           </button>
 
-          <button
-            title="Entrar ou Cadastrar"
-            onClick={() => navigate("/login")}
-            className="hover:text-[#24dbc5] transition-colors"
-          >
-            <User className="w-5 h-5" />
-          </button>
+          {token ? (
+            <button
+              title="Sair"
+              onClick={handleLogout}
+              className="hover:text-[#24dbc5] transition-colors"
+            >
+              <LogOut className="w-5 h-5" />
+            </button>
+          ) : (
+            <button
+              title="Entrar ou Cadastrar"
+              onClick={() => navigate("/login")}
+              className="hover:text-[#24dbc5] transition-colors"
+            >
+              <User className="w-5 h-5" />
+            </button>
+          )}
         </div>
       </div>
     </header>
@@ -86,4 +111,3 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
-

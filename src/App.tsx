@@ -11,6 +11,7 @@ import StockAdmin from "./pages/StockAdmin";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Payment from "./pages/Payment";
+import RequireAdmin from "./components/RequireAdmin";
 
 
 const App: React.FC = () => {
@@ -29,7 +30,14 @@ const App: React.FC = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/orders/:id" element={<OrderDetails />} />
-          <Route path="/admin/estoque" element={<StockAdmin />} />
+          <Route
+            path="/admin/estoque"
+            element={
+              <RequireAdmin>
+                <StockAdmin />
+              </RequireAdmin>
+            }
+          />
           <Route path="/payment" element={<Payment />} />
 
         </Routes>

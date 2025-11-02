@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"; 
+import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
 import Loader from "../components/Loader";
@@ -9,12 +10,24 @@ interface Product {
   name: string;
   description: string;
   price: number;
-  imagesJson?: string; // JSON com URLs das imagens
+  imagesJson?: string;
   category: string;
   isActive: boolean;
   createdAt: string;
-  stock: number; // opcional
+  stock: number;
 }
+
+const categories = [
+  "Todos",
+  "Cabos",
+  "Hardware",
+  "Periféricos",
+  "Monitores",
+  "Armazenamento",
+  "Notebooks",
+  "Celulares",
+  "Redes",
+];
 
 const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -25,31 +38,33 @@ const Products: React.FC = () => {
   const [sort, setSort] = useState<string>("padrao");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 15000]);
 
+  const location = useLocation();
+
   useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const catFromUrl = params.get("categoria");
+    if (catFromUrl && categories.includes(catFromUrl)) setCategory(catFromUrl);
+  }, [location.search]);
+
+  useEffect(() => {
+    setLoading(true);
     VitrineService.getProducts()
       .then((res) => {
-        const activeProducts = res.data.products.filter((p: Product) => p.isActive);
-        setProducts(activeProducts);
-        setFilteredProducts(activeProducts);
+        const active = res.data.products.filter((p: Product) => p.isActive);
+        setProducts(active);
+        setFilteredProducts(active);
       })
+      .catch(() => console.error("Erro ao carregar produtos"))
       .finally(() => setLoading(false));
   }, []);
 
-  // Filtro e ordenação
   useEffect(() => {
     let filtered = [...products];
 
-    // Filtrar por categoria
-    if (category !== "Todos") {
-      filtered = filtered.filter((p) => p.category === category);
-    }
+    if (category !== "Todos") filtered = filtered.filter((p) => p.category === category);
 
-    // Filtrar por faixa de preço
-    filtered = filtered.filter(
-      (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
-    );
+    filtered = filtered.filter((p) => p.price >= priceRange[0] && p.price <= priceRange[1]);
 
-    // Ordenar por preço
     if (sort === "menor") filtered.sort((a, b) => a.price - b.price);
     else if (sort === "maior") filtered.sort((a, b) => b.price - a.price);
 
@@ -60,7 +75,7 @@ const Products: React.FC = () => {
     try {
       const r = await CartService.get()
       await CartService.editItems({ productId, quantity: 1 });
-      alert("Produto adicionado ao carrinho!");
+      alert("✅ Produto adicionado ao carrinho!");
     } catch (err) {
       try{
       await CartService.create({items:[
@@ -68,7 +83,7 @@ const Products: React.FC = () => {
       ]});
       alert("Produto adicionado ao carrinho!")
     } catch(err){
-      alert("Erro ao adicionar ao carrinho!")
+      alert("Erro ao adicionar ao carrinho! ❌")
     }
     }
   };
@@ -76,22 +91,22 @@ const Products: React.FC = () => {
   if (loading) return <Loader />;
 
   return (
-    <div>
-
+    <div className="min-h-screen bg-[#e8eef5]">
       {/* FILTROS */}
-      <section className="bg-gray-100 py-4 px-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-sm">
+      <section className="bg-white border-b border-gray-200 py-4 px-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-sm">
         {/* Categoria */}
         <div className="flex items-center gap-2">
           <label className="font-semibold text-gray-700">Categoria:</label>
           <select
-            className="border border-gray-300 rounded-lg p-2 bg-white"
+            className="border border-gray-300 rounded-lg p-2 bg-white hover:border-[#24dbc5] focus:outline-none"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
-            <option value="Todos">Todas</option>
-            <option value="Eletrônicos">Eletrônicos</option>
-            <option value="Acessórios">Acessórios</option>
-            <option value="Computadores">Computadores</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -99,7 +114,7 @@ const Products: React.FC = () => {
         <div className="flex items-center gap-2">
           <label className="font-semibold text-gray-700">Ordenar por:</label>
           <select
-            className="border border-gray-300 rounded-lg p-2 bg-white"
+            className="border border-gray-300 rounded-lg p-2 bg-white hover:border-[#24dbc5] focus:outline-none"
             value={sort}
             onChange={(e) => setSort(e.target.value)}
           >
@@ -118,10 +133,8 @@ const Products: React.FC = () => {
             max={15000}
             step={500}
             value={priceRange[1]}
-            onChange={(e) =>
-              setPriceRange([0, parseInt(e.target.value, 10)])
-            }
-            className="w-48"
+            onChange={(e) => setPriceRange([0, parseInt(e.target.value)])}
+            className="w-48 accent-[#24dbc5]"
           />
           <span className="text-sm text-gray-600">
             Até R$ {priceRange[1].toLocaleString("pt-BR")}
@@ -130,24 +143,32 @@ const Products: React.FC = () => {
       </section>
 
       {/* LISTA DE PRODUTOS */}
-      <main className="p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredProducts.map((product) => {
-          const images = JSON.parse(product.imagesJson || "[]");
-          const mainImage = images[0] || "/placeholder.png";
+      <main className="p-8">
+        {filteredProducts.length === 0 ? (
+          <p className="text-center text-gray-600 text-lg mt-10">
+            Nenhum produto encontrado para esta categoria ou faixa de preço.
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredProducts.map((product) => {
+              const images = JSON.parse(product.imagesJson || "[]");
+              const mainImage = images[0] || "/placeholder.png";
 
-          return (
-            <ProductCard
-              key={product.id}
-              id={product.id}
-              name={product.name}
-              description={product.description}
-              price={product.price}
-              stock={/*product.stock*/ 100}
-              image={mainImage}
-              onAddToCart={handleAddToCart}
-            />
-          );
-        })}
+              return (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  description={product.description}
+                  price={product.price}
+                  stock={ 100 /*product.stock */}
+                  image={mainImage}
+                  onAddToCart={handleAddToCart}
+                />
+              );
+            })}
+          </div>
+        )}
       </main>
     </div>
   );

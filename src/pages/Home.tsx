@@ -1,80 +1,166 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { VitrineService } from "../services/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { ShoppingCart, Cpu, Monitor, Headphones } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+interface Produto {
+  id: string;
+  nome: string;
+  descricao: string;
+  preco: number;
+  imagemUrl: string;
+  categoria?: string;
+}
 
 const Home: React.FC = () => {
+  const [produtos, setProdutos] = useState<Produto[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const navigate = useNavigate();
+
+  const slides = [
+    "/Banner para Ecommerce de Black Friday Neon Roxo.png",
+    "/Banner para ecommerce loja virtual minimalista preto e verde.png",
+    "/Banner para loja virtual ecommerce .png",
+  ];
+
+  const categorias = [
+  { name: "Cabos", img: "/cabos.jpg" },
+  { name: "Hardware", img: "/hardware.webp" },
+  { name: "Periféricos", img: "/perifericos.webp" },
+  { name: "Monitores", img: "/monitores.jpg" },
+  { name: "Armazenamento", img: "/armazenamento.jpg" },
+  { name: "Notebooks", img: "/notebooks.jpg" },
+  { name: "Celulares", img: "/celulares.webp" },
+  { name: "Redes", img: "/redes.webp" },
+];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [slides.length]);
+
+  useEffect(() => {
+    const fetchProdutos = async () => {
+      try {
+        const response = await VitrineService.getProducts();
+        setProdutos(response.data.slice(0, 8));
+      } catch (error) {
+        console.error("Erro ao buscar produtos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProdutos();
+  }, []);
+
+  const handleCategoriaClick = (categoria: string) => {
+    navigate(`/produtos?categoria=${encodeURIComponent(categoria)}`);
+  };
+
   return (
-    <div className="flex flex-col min-h-screen bg-[#f5f7fa]">
+    <div className="flex flex-col min-h-screen bg-[#e8eef5] font-['Prompt'] text-black">
 
-      {/* Hero Banner */}
-      <section className="relative bg-gradient-to-r from-[#00C9A7] to-[#0091EA] text-white py-20 px-8">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl font-extrabold mb-4 drop-shadow-md">
-            Tecnologia que acelera o seu mundo 🚀
-          </h1>
-          <p className="text-lg text-gray-100 mb-8">
-            As melhores ofertas em hardware, periféricos e eletrônicos você encontra aqui.
-          </p>
-          <button className="bg-white text-[#0091EA] font-semibold px-8 py-3 rounded-lg hover:bg-gray-100 transition-all shadow-md">
-            Ver Ofertas
-          </button>
-        </div>
+      {/* ====== CARROSSEL ====== */}
+      <section className="relative w-full h-[400px] md:h-[500px] overflow-hidden">
+        {slides.map((img, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              index === currentSlide ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <img src={img} alt={`Banner ${index + 1}`} className="w-full h-full object-cover" />
+          </div>
+        ))}
       </section>
 
-      {/* Categorias */}
-      <section className="py-16 px-8 max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-          Categorias em destaque
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[
-            { icon: <Cpu size={40} />, label: "Hardware" },
-            { icon: <Monitor size={40} />, label: "Monitores" },
-            { icon: <Headphones size={40} />, label: "Periféricos" },
-            { icon: <ShoppingCart size={40} />, label: "Ofertas" },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className="bg-white rounded-2xl shadow hover:shadow-lg p-6 flex flex-col items-center text-center transition-all hover:-translate-y-1"
-            >
-              <div className="text-[#0091EA] mb-3">{item.icon}</div>
-              <p className="text-gray-700 font-semibold">{item.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Produtos em destaque */}
-      <section className="bg-white py-16 px-8 shadow-inner">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
-            Ofertas imperdíveis 🔥
+      {/* ====== CATEGORIAS ====== */}
+      <section className="bg-white py-12 px-6 md:px-12 shadow-inner">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+            <span className="text-[#24dbc5] text-3xl">☰</span>
+            CATEGORIAS
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[1, 2, 3, 4].map((n) => (
+
+          <div className="flex overflow-x-auto space-x-6 scrollbar-hide">
+            {categorias.map((cat, i) => (
               <div
-                key={n}
-                className="bg-[#f9fafb] rounded-2xl p-4 shadow hover:shadow-lg transition-all hover:-translate-y-1"
+                key={i}
+                onClick={() => handleCategoriaClick(cat.name)}
+                className="flex-shrink-0 w-40 text-center group cursor-pointer"
               >
-                <div className="h-40 bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-                  <span className="text-gray-400">Imagem {n}</span>
+                <div className="h-28 w-40 rounded-xl overflow-hidden shadow-md group-hover:shadow-xl transition-all">
+                  <img
+                    src={cat.img}
+                    alt={cat.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  Produto {n}
-                </h3>
-                <p className="text-gray-500 mb-4">Descrição breve do produto {n}.</p>
-                <button className="w-full bg-[#0091EA] text-white font-semibold py-2 rounded-lg hover:bg-[#007ACC] transition-all">
-                  Comprar
-                </button>
+                <p className="mt-3 text-sm font-bold uppercase text-[#000000] group-hover:text-[#24dbc5]">
+                  {cat.name}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* ====== PRODUTOS ====== */}
+      <section className="bg-white py-16 px-8 shadow-inner">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+            MAIS PROCURADOS 🔥
+          </h2>
+
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="bg-[#f5f7fa] rounded-2xl p-4 shadow animate-pulse">
+                  <div className="h-40 bg-gray-300 rounded-lg mb-4"></div>
+                  <div className="h-4 bg-gray-300 w-3/4 mb-2 rounded"></div>
+                  <div className="h-4 bg-gray-300 w-1/2 mb-4 rounded"></div>
+                  <div className="h-8 bg-gray-300 rounded"></div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {produtos.map((produto) => (
+                <div
+                  key={produto.id}
+                  className="bg-[#f9fafb] rounded-2xl p-4 shadow hover:shadow-lg transition-all hover:-translate-y-1"
+                >
+                  <div className="h-40 bg-gray-200 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                    <img
+                      src={produto.imagemUrl}
+                      alt={produto.nome}
+                      className="object-cover h-full w-full"
+                    />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">{produto.nome}</h3>
+                  <p className="text-gray-500 mb-4 text-sm line-clamp-2">{produto.descricao}</p>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xl font-bold text-[#24dbc5]">
+                      R$ {produto.preco.toFixed(2)}
+                    </span>
+                    <button className="bg-[#24dbc5] text-black font-semibold py-2 px-4 rounded-lg hover:bg-[#1fb8a8] transition-all flex items-center gap-2">
+                      <ShoppingCart size={18} /> Comprar
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
     </div>
   );
 };
 
 export default Home;
-

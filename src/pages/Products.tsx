@@ -71,15 +71,16 @@ const Products: React.FC = () => {
     setFilteredProducts(filtered);
   }, [category, sort, priceRange, products]);
 
-  const handleAddToCart = async (productId: string) => {
+  const handleAddToCart = async (productId: string, price: number) => {
     try {
       const r = await CartService.get()
-      await CartService.editItems({ productId, quantity: 1 });
+      const items = r.data.items;
+      await CartService.editItems([...items, { productId, quantity: 1, unitPrice: price }]);
       alert("✅ Produto adicionado ao carrinho!");
     } catch (err) {
       try{
       await CartService.create({items:[
-        { productId: productId, quantity: 1, unitPrice: 100 }
+        { productId: productId, quantity: 1, unitPrice: price }
       ]});
       alert("Produto adicionado ao carrinho!")
     } catch(err){

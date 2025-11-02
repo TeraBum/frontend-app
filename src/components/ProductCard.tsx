@@ -7,7 +7,7 @@ interface ProductCardProps {
   price: number;
   stock: number;
   image?: string;
-  onAddToCart: (id: string) => void;
+  onAddToCart: (id: string, price: number) => void;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -42,7 +42,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       {/* Estoque e botão */}
       <button
         disabled={stock === 0}
-        onClick={() => onAddToCart(id)}
+        onClick={() => onAddToCart(id, price)}
         className={`mt-auto px-4 py-2 rounded-lg font-semibold transition-all ${
           stock > 0
             ? "bg-[#24dbc5] hover:bg-[#1fc2ae] text-black"

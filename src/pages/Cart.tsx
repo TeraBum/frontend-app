@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
-import { CartService } from '../services/api';
+import { CartService, VitrineService } from '../services/api';
 import Loader from '../components/Loader';
 
 interface CartItem {
   productId: string;
   name: string;
   quantity: number;
-  price: number;
+  unitPrice: number;
 }
 
 
@@ -18,7 +18,15 @@ const Cart: React.FC = () => {
   const fetchCart = async () => {
     try {
       const res = await CartService.get();
-      setCart(res.data.items);
+      console.log(res.data.items)
+      const products = []
+      for (const item of res.data.items) {
+      const productRes = await VitrineService.getProductById(item.productId)
+      products.push({...item, name: productRes.data.name})
+  }
+      
+     // VitrineService.getProductById
+      setCart(products);
       setLoading(false);
     } catch (err) {
       setCart([]);
@@ -55,7 +63,7 @@ const Cart: React.FC = () => {
               {cart.map(item => (
                 <li key={item.productId} className="flex justify-between bg-white p-4 rounded shadow">
                   <span>{item.name} x {item.quantity}</span>
-                  <span>R${(item.price * item.quantity).toFixed(2)}</span>
+                  <span>R${(item.unitPrice * item.quantity).toFixed(2)}</span>
                 </li>
               ))}
             </ul>

@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Products from "./pages/Products";
 import Cart from "./pages/Cart";
+import StockAdmin from "./pages/StockAdmin";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -26,6 +27,7 @@ const App: React.FC = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/orders/:id" element={<OrderDetails />} />
+          <Route path="/admin/estoque" element={<StockAdmin />} />
         </Routes>
       </main>
 

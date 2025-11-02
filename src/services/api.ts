@@ -9,8 +9,9 @@ const vitrineAPI = axios.create({
   baseURL: 'http://localhost:5010/api/vitrine',
 });
 
+const estoqueBaseURL = import.meta.env.VITE_ESTOQUE_API_URL ?? '/api/v1/estoque';
 const estoqueAPI = axios.create({
-  baseURL: 'http://localhost:5020/api/stock-items',
+  baseURL: estoqueBaseURL,
 });
 
 const carrinhoAPI = axios.create({
@@ -78,6 +79,20 @@ export const StockService = {
     estoqueAPI.delete(`/${warehouseId}/${productId}`),
   createItem: (data: any) => estoqueAPI.post('/', data),
   baixa: (data: any) => estoqueAPI.post('/baixa', data),
+};
+
+// ------------------- Estoque Products Service -------------------
+export const StockProductService = {
+  list: () => estoqueAPI.get('/products'),
+  getById: (id: string) => estoqueAPI.get(`/products/${id}`),
+  create: (data: any) => estoqueAPI.post('/products', data),
+  update: (id: string, data: any) => estoqueAPI.put('/products', { id, ...data }),
+  delete: (id: string) => {
+    let productId = id.trim();
+    productId = productId.replace(/^[{\["]+|[}\]"]+$/g, "");
+    productId = productId.replace(/[^0-9a-fA-F-]/g, "");
+    return estoqueAPI.delete(`/products/${encodeURIComponent(productId)}`);
+  },
 };
 
 // ------------------- CartService -------------------

@@ -71,7 +71,7 @@ export const VitrineService = {
 
 // ------------------- EstoqueService -------------------
 export const StockService = {
-  listItems: () => estoqueAPI.get('/'),
+  listItems: () => estoqueAPI.get('/stock-items'),
   getItem: (warehouseId: string, productId: string) => estoqueAPI.get(`/${warehouseId}/${productId}`),
   updateItem: (warehouseId: string, productId: string, data: any) =>
     estoqueAPI.put(`/${warehouseId}/${productId}`, data),

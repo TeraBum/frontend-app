@@ -1,5 +1,6 @@
 # 🏗️ Estrutura recomendada do repositório
 
+```
 frontend-app/
 ├── src/
 │   ├── components/
@@ -30,7 +31,7 @@ frontend-app/
 ├── postcss.config.js         <- configuração do PostCSS para Tailwind
 ├── tsconfig.json
 └── vite.config.ts
-
+```
 
 ##  Passo a passo pra criar do zero
 

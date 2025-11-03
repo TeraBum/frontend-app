@@ -59,7 +59,7 @@ const Home: React.FC = () => {
   }, []);
 
   const handleCategoriaClick = (categoria: string) => {
-    navigate(`/produtos?categoria=${encodeURIComponent(categoria)}`);
+    navigate(`/products?categoria=${encodeURIComponent(categoria)}`);
   };
 
   return (

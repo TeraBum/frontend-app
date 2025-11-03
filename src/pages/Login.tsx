@@ -39,6 +39,8 @@ const Login: React.FC = () => {
     }
   };
 
+  const handleGoToRegister = () => navigate('/register', {replace: true})
+
   return (
     <div className="min-h-screen">
       <div className="flex flex-col items-center justify-center mt-20 bg-secondary">
@@ -61,6 +63,7 @@ const Login: React.FC = () => {
             className="w-full p-2 border rounded mb-4"
             required
           />
+          <div className='text-center block m-2' onClick={handleGoToRegister}>Não tem uma conta? <a className='cursor-pointer text-blue-600'>Registre</a></div>
           <button type="submit" className="w-full bg-primary text-white py-2 rounded">Entrar</button>
         </form>
       </div>

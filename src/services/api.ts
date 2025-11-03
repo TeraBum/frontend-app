@@ -44,6 +44,7 @@ export const UserService = {
       nome: data.name,
       email: data.email,
       senha: data.password,
+      role: 'Normal'
     }),
 
   login: async (data: { email: string; password: string }) => {

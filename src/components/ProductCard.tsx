@@ -24,7 +24,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       {/* Imagem do produto */}
       <div className="h-40 w-full mb-4">
         <img
-          src={image || "/placeholder.png"}
+          src={image || "https://picsum.photos/200"}
           alt={name}
           className="h-full w-full object-cover rounded-lg"
         />

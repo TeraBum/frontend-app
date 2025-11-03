@@ -13,7 +13,7 @@ const Register: React.FC = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await UserService.register({ name, email, password });
+      await UserService.register({ name, email, password});
       navigate('/login');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Erro ao registrar');

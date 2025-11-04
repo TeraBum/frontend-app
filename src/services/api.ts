@@ -13,7 +13,9 @@ const vitrineAPI = axios.create({
   baseURL: 'http://146.235.59.248/vitrine/api/v1/vitrine',
 });
 
-const estoqueBaseURL = import.meta.env.VITE_ESTOQUE_API_URL ?? '/api/v1/estoque';
+//const estoqueBaseURL = import.meta.env.VITE_ESTOQUE_API_URL ?? '/api/v1/estoque';
+//const estoqueBaseURL = 'http://146.235.59.248/estoque/api/v1/estoque';
+const estoqueBaseURL = 'http://localhost:8080/api/v1/estoque/';
 const estoqueAPI = axios.create({
   baseURL: estoqueBaseURL,
 });
@@ -69,7 +71,7 @@ export const UserService = {
 
 // ------------------- VitrineService -------------------
 export const VitrineService = {
-  getProducts: () => vitrineAPI.get('/Product'),
+  getProducts: () => vitrineAPI.get('/Product?pageSize=100'),
   getProductById: (id: string) => vitrineAPI.get(`/Product/${id}`),
   getProductStock: (id: string) => vitrineAPI.get(`/Product/${id}/stock`),
 };

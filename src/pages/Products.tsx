@@ -50,6 +50,7 @@ const Products: React.FC = () => {
     setLoading(true);
     VitrineService.getProducts()
       .then((res) => {
+        console.log(res.data)
         const active = res.data.products.filter((p: Product) => p.isActive);
         setProducts(active);
         setFilteredProducts(active);

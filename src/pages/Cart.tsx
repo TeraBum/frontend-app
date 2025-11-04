@@ -41,7 +41,7 @@ const Cart: React.FC = () => {
   const handleCheckout = async () => {
     try {
       await CartService.checkout({ items: cart });
-      alert('Compra realizada com sucesso!');
+      alert('Checkout realizado com sucesso, acompanhe a sua compra!');
       setCart([]);
       //redirect para o servico de pagamento
     } catch (err) {
@@ -61,9 +61,10 @@ const Cart: React.FC = () => {
           <>
             <ul className="space-y-2">
               {cart.map(item => (
-                <li key={item.productId} className="flex justify-between bg-white p-4 rounded shadow">
-                  <span>{item.name} x {item.quantity}</span>
-                  <span>R${(item.unitPrice * item.quantity).toFixed(2)}</span>
+                <li key={item.productId} className="flex justify-between items-center bg-white p-4 rounded shadow">
+                  <span className='flex-1'>{item.name} x {item.quantity}</span>
+                  <span className='flex-1'>R${(item.unitPrice * item.quantity).toFixed(2)}</span>
+                  <button className='bg-red-500 rounded-md p-1 text-white'>Remover</button>
                 </li>
               ))}
             </ul>
